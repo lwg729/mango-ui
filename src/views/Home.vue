@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <h2>Home Page</h2>
+    <li class="fa fa-home fa-2x"></li>
     <el-button type="primary" @click="testAxios()">测试Axios掉用</el-button>
     <el-button type="primary" @click="getUser()">获得用户信息</el-button>
     <el-button type="primary" @click="getMenu()">获得菜单信息</el-button>
