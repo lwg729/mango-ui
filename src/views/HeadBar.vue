@@ -1,5 +1,12 @@
 <template>
-  <div class="headbar" style="background:#14889A" :class="'position-left'">
+  <div class="headbar" style="background:#14889A"
+       :class="collapse?'position-collapse-left':'position-left'">
+    <!-- 导航收缩 -->
+    <span class="hamburg">
+      <el-menu class="el-menu-demo" background-color="#14889A" text-color="#fff" active-text-color="#14889A" mode="horizontal">
+        <el-menu-item index="1" @click="onCollapse"><hamburger :isActive="collapse"></hamburger></el-menu-item>
+      </el-menu>
+    </span>
     <!-- 工具栏 -->
     <span class="toolbar">
       <el-menu class="el-menu-demo" background-color="#14889A" text-color="#14889A" active-text-color="#14889A" mode="horizontal">
@@ -13,15 +20,20 @@
 </template>
 
 <script>
-import mock from '../mock/index'
+import { mapState } from 'vuex'
+import mock from "../mock/index"
+import Hamburger from "../components/Hamburger"
 export default {
+  components:{
+    Hamburger
+  },
   data() {
     return {
       user: {
-        name: "lwg",
+        name: "Louis",
         avatar: "",
         role: "超级管理员",
-        registeInfo: "注册时间：2020-09-20 "
+        registeInfo: "注册时间：2018-12-20 "
       },
       activeIndex: '1',
       langVisible: false
@@ -30,14 +42,23 @@ export default {
   methods: {
     selectNavBar(key, keyPath) {
       console.log(key, keyPath)
-    }
+    },
+    // 折叠导航栏
+    onCollapse: function() {
+      this.$store.commit('onCollapse')
+    },
   },
   mounted() {
-    const user = sessionStorage.getItem("user");
+    var user = sessionStorage.getItem("user")
     if (user) {
       this.user.name = user
       this.user.avatar = require("../assets/user.png")
     }
+  },
+  computed:{
+    ...mapState({
+      collapse: state=>state.app.collapse
+    })
   }
 }
 </script>
@@ -54,7 +75,7 @@ export default {
   border-left-width: 1px;
   border-left-style: solid;
 }
-.navbar {
+.hamburg, .navbar {
   float: left;
 }
 .toolbar {
@@ -74,5 +95,8 @@ export default {
 }
 .position-left {
   left: 200px;
+}
+.position-collapse-left {
+  left: 65px;
 }
 </style>
